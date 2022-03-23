@@ -984,6 +984,7 @@ export async function main(argv: string[]): Promise<void> {
                 };
               }
             ),
+            services: config.services,
             unsafe: config.unsafe?.bindings,
           }}
           crons={config.triggers.crons}
@@ -1424,6 +1425,7 @@ export async function main(argv: string[]): Promise<void> {
                 };
               }
             ),
+            services: config.services,
             unsafe: config.unsafe?.bindings,
           }}
           crons={config.triggers.crons}
@@ -1616,6 +1618,7 @@ export async function main(argv: string[]): Promise<void> {
                       vars: {},
                       durable_objects: { bindings: [] },
                       r2_buckets: [],
+                      services: [],
                       wasm_modules: {},
                       text_blobs: {},
                       data_blobs: {},

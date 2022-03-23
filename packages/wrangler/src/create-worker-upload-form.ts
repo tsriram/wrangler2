@@ -32,13 +32,15 @@ export interface WorkerMetadata {
   compatibility_flags?: string[];
   usage_model?: "bundled" | "unbound";
   migrations?: CfDurableObjectMigrations;
+  // If you add any new binding types here, also add it to safeBindings
+  // under validateUnsafeBinding in config/validation.ts
   bindings: (
-    | { type: "kv_namespace"; name: string; namespace_id: string }
     | { type: "plain_text"; name: string; text: string }
     | { type: "json"; name: string; json: unknown }
     | { type: "wasm_module"; name: string; part: string }
     | { type: "text_blob"; name: string; part: string }
     | { type: "data_blob"; name: string; part: string }
+    | { type: "kv_namespace"; name: string; namespace_id: string }
     | {
         type: "durable_object_namespace";
         name: string;
@@ -46,6 +48,7 @@ export interface WorkerMetadata {
         script_name?: string;
       }
     | { type: "r2_bucket"; name: string; bucket_name: string }
+    | { type: "service"; name: string; service: string; environment?: string }
   )[];
 }
 
@@ -66,6 +69,14 @@ export function createWorkerUploadForm(worker: CfWorkerInit): FormData {
   let { modules } = worker;
 
   const metadataBindings: WorkerMetadata["bindings"] = [];
+
+  Object.entries(bindings.vars || {})?.forEach(([key, value]) => {
+    if (typeof value === "string") {
+      metadataBindings.push({ name: key, type: "plain_text", text: value });
+    } else {
+      metadataBindings.push({ name: key, type: "json", json: value });
+    }
+  });
 
   bindings.kv_namespaces?.forEach(({ id, binding }) => {
     metadataBindings.push({
@@ -94,12 +105,13 @@ export function createWorkerUploadForm(worker: CfWorkerInit): FormData {
     });
   });
 
-  Object.entries(bindings.vars || {})?.forEach(([key, value]) => {
-    if (typeof value === "string") {
-      metadataBindings.push({ name: key, type: "plain_text", text: value });
-    } else {
-      metadataBindings.push({ name: key, type: "json", json: value });
-    }
+  bindings.services?.forEach(({ binding, service, environment }) => {
+    metadataBindings.push({
+      name: binding,
+      type: "service",
+      service,
+      ...(environment && { environment }),
+    });
   });
 
   for (const [name, filePath] of Object.entries(bindings.wasm_modules || {})) {
