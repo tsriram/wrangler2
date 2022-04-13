@@ -37,6 +37,7 @@ export type DevProps = {
   localProtocol: "https" | "http";
   enableLocalPersistence: boolean;
   bindings: CfWorkerInit["bindings"];
+  migrations: CfWorkerInit["migrations"];
   crons: Config["triggers"]["crons"];
   public: undefined | string;
   assetPaths: undefined | AssetPaths;
@@ -179,6 +180,7 @@ function DevSession(props: DevSessionProps) {
       accountId={props.accountId}
       apiToken={props.apiToken}
       bindings={props.bindings}
+      migrations={props.migrations}
       assetPaths={props.assetPaths}
       public={props.public}
       port={props.port}

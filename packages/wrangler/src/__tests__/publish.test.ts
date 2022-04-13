@@ -2346,11 +2346,11 @@ export default{
         await expect(
           runWrangler("publish index.js --legacy-env false")
         ).rejects.toThrowErrorMatchingInlineSnapshot(
-          `"Publishing Durable Objects to a service environment is not currently supported. This is being tracked at https://github.com/cloudflare/wrangler2/issues/739"`
+          `"Using Durable Objects with service environments is not currently supported. This is being tracked at https://github.com/cloudflare/wrangler2/issues/739"`
         );
         expect(std).toMatchInlineSnapshot(`
           Object {
-            "err": "Publishing Durable Objects to a service environment is not currently supported. This is being tracked at https://github.com/cloudflare/wrangler2/issues/739
+            "err": "Using Durable Objects with service environments is not currently supported. This is being tracked at https://github.com/cloudflare/wrangler2/issues/739
 
           [32m%s[0m If you think this is a bug then please create an issue at https://github.com/cloudflare/wrangler2/issues/new.",
             "out": "",

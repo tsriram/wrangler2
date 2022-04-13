@@ -24,6 +24,7 @@ export function Remote(props: {
   accountId: undefined | string;
   apiToken: undefined | string;
   bindings: CfWorkerInit["bindings"];
+  migrations: CfWorkerInit["migrations"];
   compatibilityDate: string;
   compatibilityFlags: undefined | string[];
   usageModel: undefined | "bundled" | "unbound";
@@ -41,6 +42,7 @@ export function Remote(props: {
     accountId: props.accountId,
     apiToken: props.apiToken,
     bindings: props.bindings,
+    migrations: props.migrations,
     assetPaths: props.assetPaths,
     port: props.port,
     compatibilityDate: props.compatibilityDate,
@@ -75,6 +77,7 @@ export function useWorker(props: {
   accountId: string;
   apiToken: string;
   bindings: CfWorkerInit["bindings"];
+  migrations: CfWorkerInit["migrations"];
   assetPaths: undefined | AssetPaths;
   port: number;
   compatibilityDate: string | undefined;
@@ -162,7 +165,7 @@ export function useWorker(props: {
               }),
           },
         },
-        migrations: undefined, // no migrations in dev
+        migrations: props.migrations,
         compatibility_date: compatibilityDate,
         compatibility_flags: compatibilityFlags,
         usage_model: usageModel,
@@ -200,6 +203,7 @@ export function useWorker(props: {
     compatibilityFlags,
     usageModel,
     bindings,
+    props.migrations,
     modules,
     props.env,
     props.legacyEnv,
