@@ -1,5 +1,13 @@
 # wrangler
 
+## 2.0.3
+
+### Patch Changes
+
+- [#952](https://github.com/cloudflare/wrangler2/pull/952) [`ae3895e`](https://github.com/cloudflare/wrangler2/commit/ae3895eea63518242b2660e6b52790f922566a78) Thanks [@d3lm](https://github.com/d3lm)! - feat: use host specific callback url
+
+  To allow OAuth to work on environments such as WebContainer we have to generate a host-specific callback URL. This PR uses `@webcontainer/env` to generate such URL only for running in WebContainer. Otherwise the callback URL stays unmodified.
+
 ## 2.0.2
 
 ### Patch Changes
